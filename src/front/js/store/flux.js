@@ -4,7 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			demo: [{ title: "FIRST", background: "white", initial: "white" },
 			{ title: "SECOND", background: "white", initial: "white" }],
-			cohorte: 'Spain 91',
+			cohorte: 'Luis Borjas',
 			isLogged: false,
 			baseURLContact: "https://playground.4geeks.com/contact",
 			contacts: [],
