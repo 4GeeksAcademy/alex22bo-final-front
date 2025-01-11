@@ -32,12 +32,12 @@ export const Navbar = () => {
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 						<li className="nav-item">
-							<Link className="nav-link active" aria-current="page" to="#">{'Home'}</Link>
+							<Link className="nav-link active" aria-current="page" to="/">{'Home'}</Link>
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link active" to="/contactlist">{'Contact-List'}</Link>
 						</li>
-						<li className="nav-item dropdown">
+						{/*<li className="nav-item dropdown">
 							<Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Dropdown
 							</Link>
@@ -47,12 +47,12 @@ export const Navbar = () => {
 								<li><hr className="dropdown-divider"/></li>
 								<li><Link className="dropdown-item" to="#">Something else here</Link></li>
 							</ul>
-						</li>
+						</li>*/}
 					</ul>
-					<form className="d-flex" role="search">
-						{/*<Link className="btn btn-outline-success" to={store.isLogged ? '/' : '/login'}>{store.isLogged ? 'Logout' : 'Login'}</Link>*/}
+					{/*<form className="d-flex" role="search">
+						<Link className="btn btn-outline-success" to={store.isLogged ? '/' : '/login'}>{store.isLogged ? 'Logout' : 'Login'}</Link>
 						<button className="btn btn-outline-success" onClick={handleLogin}>{store.isLogged ? 'Logout' : 'Login'}</button>
-					</form>
+					</form>*/}
 				</div>
 			</div>
 		</nav>
