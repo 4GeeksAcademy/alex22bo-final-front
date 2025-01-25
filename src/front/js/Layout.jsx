@@ -15,6 +15,9 @@ import { Login } from "./pages/Login.jsx";
 import { Updatecontact } from "./component/Updatecontact.jsx";
 import { Contactlist } from "./pages/Contactlist.jsx";
 import { NewContact } from "./component/NewContact.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { Starships } from "./pages/Starships.jsx";
 
 
 
@@ -32,6 +35,9 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        <Route element={<Characters />} path="/characters"/>
+                        <Route element={<Planets />} path="/planets"/>
+                        <Route element={<Starships />} path="/starships"/>
                         <Route element={<Contactlist/>} path="/contactlist"/>
                         <Route element={<NewContact/>} path="/newcontact"/>                       
                         <Route element={<Updatecontact/>} path="/updatecontact"/>
