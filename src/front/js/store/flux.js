@@ -120,6 +120,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                 }
                 const data = await response.json();
+				console.log(data)
                 setStore({ dataCharacter: data.results });
             },
 			getStarShips: async () => {
@@ -130,6 +131,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                 }
                 const data = await response.json();
+				console.log(data)
                 setStore({ dataStarships: data.results });
             },
 			getPlanets: async () => {
@@ -140,6 +142,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                 }
                 const data = await response.json();
+				console.log(data)
                 setStore({ dataPlanets: data.results });
             }
 
