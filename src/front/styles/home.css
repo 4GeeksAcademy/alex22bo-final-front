@@ -6,3 +6,87 @@
     on that page only (the ones not reused in other pages).
 */
 
+body {
+    background-color: #000000;
+    
+    font-family: 'Star Jedi', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+    background-image: linear-gradient(to bottom, #111111, #000000);
+    border-bottom: 2px solid #ffc107;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.navbar-nav .nav-link {
+    color: #ffc107;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffea00;
+}
+
+/* Card Components */
+.card {
+    border: 2px solid #ffc107;
+    box-shadow: 0px 0px 10px 2px #ffec99;
+}
+
+.card-title {
+    color: #ffc107;
+}
+
+.card-body {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.card img {
+    border-radius: 5px;
+}
+
+/* Buttons */
+.btn {
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #ffea00;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+    background: #111111;
+    color: #ffc107;
+}
+
+.footer a {
+    color: #ffc107;
+}
+
+.footer a:hover {
+    color: #ffea00;
+}
+
+/* Text Highlights */
+.text-warning {
+    color: #ffc107 !important;
+}

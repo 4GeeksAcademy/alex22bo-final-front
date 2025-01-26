@@ -9,7 +9,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			baseURLContact: "https://playground.4geeks.com/contact",
 			contacts: [],
 			user: "alex22bo",
-			currentContact: {}
+			currentContact: {},
+			baseURLStarWars: "https://www.swapi.tech/api",
+			dataCharacters: [],
+			dataPlanets: [],
+			dataStarships: []
 		},
 		actions: {
 			setIsLogged: (value) => { setStore({ isLogged: value }) },
@@ -107,7 +111,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				getActions().getContacts();
-			}
+			},
+			getCharacter: async () => {
+                const uri = `${getStore().baseURLStarWars}/people`;
+                const response = await fetch(uri);
+                if (!response.ok) {
+                    console.log('Error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setStore({ dataCharacter: data.results });
+            },
+			getStarShips: async () => {
+                const uri = `${getStore().baseURLStarWars}/starships`;
+                const response = await fetch(uri);
+                if (!response.ok) {
+                    console.log('Error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setStore({ dataStarships: data.results });
+            },
+			getPlanets: async () => {
+                const uri = `${getStore().baseURLStarWars}/planets`;
+                const response = await fetch(uri);
+                if (!response.ok) {
+                    console.log('Error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setStore({ dataPlanets: data.results });
+            }
+
+
 		}
 	};
 };
