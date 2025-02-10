@@ -12,7 +12,9 @@ export const Navbar = () => {
 
 	const Navigate = useNavigate()
 
-	const handleLogin = () =>{
+	//accessProtected
+
+	const handleLogin = () => {
 		if (store.isLogged){
 			actions.setIsLogged(false);
 			actions.setUser({})
@@ -20,6 +22,13 @@ export const Navbar = () => {
 		}else{
 			Navigate('/Login')
 		}
+	}
+
+	const handleLogout = () => {
+		actions.setIsLogged(false)
+		actions.setUser({});
+		sessionStorage.removeItem("token")
+		Navigate("/")
 	}
 
 	return (
@@ -37,7 +46,7 @@ export const Navbar = () => {
 						<li className="nav-item">
 							<Link className="nav-link active" to="/contactlist">{'Contact-List'}</Link>
 						</li>
-						{/*<li className="nav-item dropdown">
+						<li className="nav-item dropdown">
 							<Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Dropdown
 							</Link>
@@ -47,12 +56,16 @@ export const Navbar = () => {
 								<li><hr className="dropdown-divider"/></li>
 								<li><Link className="dropdown-item" to="#">Something else here</Link></li>
 							</ul>
-						</li>*/}
+						</li>
 					</ul>
-					{/*<form className="d-flex" role="search">
-						<Link className="btn btn-outline-success" to={store.isLogged ? '/' : '/login'}>{store.isLogged ? 'Logout' : 'Login'}</Link>
-						<button className="btn btn-outline-success" onClick={handleLogin}>{store.isLogged ? 'Logout' : 'Login'}</button>
-					</form>*/}
+					<div className="d-flex">
+						{store.isLogged ? (
+							<button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+						) : (
+							<button className="btn btn-outline-succes" onClick={handleLogin}>Login</button>
+						)}
+
+					</div>
 				</div>
 			</div>
 		</nav>

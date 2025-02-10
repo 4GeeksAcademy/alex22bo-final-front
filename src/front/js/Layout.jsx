@@ -15,7 +15,7 @@ import { Login } from "./pages/Login.jsx";
 import { Updatecontact } from "./component/Updatecontact.jsx";
 import { Contactlist } from "./pages/Contactlist.jsx";
 import { NewContact } from "./component/NewContact.jsx";
-
+import { Alert } from "./component/Alert.jsx";
 
 
 // Create your first component
@@ -30,12 +30,13 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <Alert />
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Contactlist/>} path="/contactlist"/>
                         <Route element={<NewContact/>} path="/newcontact"/>                       
                         <Route element={<Updatecontact/>} path="/updatecontact"/>
-                        <Route element={<Login/>} path="/login"/>
+                        <Route element={<Login/>} path="/login"/>                      
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404/>} path="*" />
