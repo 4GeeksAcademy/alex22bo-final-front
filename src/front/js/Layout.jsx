@@ -16,6 +16,7 @@ import { Updatecontact } from "./component/Updatecontact.jsx";
 import { Contactlist } from "./pages/Contactlist.jsx";
 import { NewContact } from "./component/NewContact.jsx";
 import { Alert } from "./component/Alert.jsx";
+import { Private } from "./component/Private.jsx";
 
 
 // Create your first component
@@ -36,6 +37,7 @@ const Layout = () => {
                         <Route element={<Contactlist/>} path="/contactlist"/>
                         <Route element={<NewContact/>} path="/newcontact"/>                       
                         <Route element={<Updatecontact/>} path="/updatecontact"/>
+                        <Route element={<Private/>} path="/private"/>
                         <Route element={<Login/>} path="/login"/>                      
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
