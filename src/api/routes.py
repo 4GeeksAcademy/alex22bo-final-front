@@ -25,7 +25,7 @@ def handle_hello():
 
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
-@api.route("/login", methods=["POST"])
+@api.route('/login', methods=['POST'])
 def login():
     response_body = {}
     data=request.json
@@ -42,7 +42,42 @@ def login():
     response_body['access_token'] = access_token
     response_body['message'] = 'User logged'
     response_body['results'] = user
-    return response_body, 200   
+    return response_body, 200
+
+@api.route("/signup", methods=['POST'])
+def signup():
+    response_body = {}
+    data = request.json
+    email = data.get("email")
+    first_name = data.get("first_name")    
+    password = data.get("password")
+
+    if not email or not password:
+        response_body['message'] = 'Email or password are required'
+        return response_body, 400
+    
+    user_register = db.session.execute(db.select(Users).where(Users.email == email)).scalar()
+    if user_register:
+        response_body["message"] = "User alredy exists"
+        return response_body, 400
+    
+    row = Users(email=data.get('email'),
+                password=data.get('password'),
+                first_name=data.get('first_name'),
+                is_active=True)
+    db.session.add(row)
+    db.session.commit()
+    user = row.serialize()
+    claims = {"user_id": user["id"],
+              "first_name": user["first_name"],
+              "is_active": user["is_active"]}
+    access_token = create_access_token(identity=email, additional_claims=claims)
+    response_body["access_token"] = access_token
+    response_body["message"] = "User register"
+    response_body["results"] = user
+    return response_body, 200
+    
+
 
 
 # Protect a route with jwt_required, which will kick out requests
