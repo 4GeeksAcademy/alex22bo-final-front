@@ -25,6 +25,7 @@ class Users(db.Model):
                 "first_name": self.first_name,
                 "phone": self.phone}
 
+
 # Db Instagram
 class Posts(db.Model):
     __tablename__ = 'posts'
@@ -154,12 +155,14 @@ class Planets(db.Model):
                "climate": self.climate,
                "terrain": self.terrain}
 
+
 class CharacterFavorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user_to = db.relationship('Users', foreign_keys=[user_id], backref=db.backref('character_favorite_to', lazy='select'))
     character_id = db.Column(db.Integer, db.ForeignKey('characters.id'))
     character_to = db.relationship('Characters', foreign_keys=[character_id], backref=db.backref('character_to', lazy='select'))
+
 
 class PlanetsFavorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)

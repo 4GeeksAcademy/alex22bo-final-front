@@ -44,6 +44,7 @@ def login():
     response_body['results'] = user
     return response_body, 200
 
+
 @api.route("/signup", methods=['POST'])
 def signup():
     response_body = {}
@@ -77,8 +78,6 @@ def signup():
     response_body["results"] = user
     return response_body, 200
     
-
-
 
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
@@ -120,7 +119,6 @@ def users():
         response_body['message'] = 'Listado de Usuarios'
         response_body['results'] = result
         return response_body, 200
-
 
 
 @api.route('/posts', methods=['GET', 'POST'])
