@@ -23,7 +23,7 @@ export const Navbar = () => {
 				<div className="collapse navbar-collapse" id="navbarColor02">
 					<ul className="navbar-nav me-auto">
 						<li className="nav-item">
-							<Link className="nav-link text-warning" to="/characters">{'Characters'}</Link>
+							<Link className="nav-link text-warning" to="/characters-page">{'Characters'}</Link>
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link text-warning" aria-current="page" to="/planets">{'Planets'}</Link>

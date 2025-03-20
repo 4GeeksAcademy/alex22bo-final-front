@@ -12,8 +12,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentContact: {},
 			baseURLStarWars: "https://www.swapi.tech/api",
 			dataCharacters: [],
+			currentCharacterDetail: {},
 			dataPlanets: [],
-			dataStarships: []
+			currentPlanetDetail: {},
+			dataStarships: [],
+			currentStarshipDetail: {}
 		},
 		actions: {
 			setIsLogged: (value) => { setStore({ isLogged: value }) },
@@ -113,16 +116,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().getContacts();
 			},
 			getCharacter: async () => {
-                const uri = `${getStore().baseURLStarWars}/people`;
+				const store = getStore();
+				const storedCharacters = localStorage.getItem("dataCharacters");
+				if(storedCharacters){
+					setStore({dataCharacters: JSON.parse(storedCharacters)});
+					return
+				}
+                const uri = `${store.baseURLStarWars}/people`;
                 const response = await fetch(uri);
                 if (!response.ok) {
                     console.log('Error:', response.status, response.statusText);
                     return;
                 }
                 const data = await response.json();
-				console.log(data)
-                setStore({ dataCharacter: data.results });
+                setStore({ dataCharacters: data.results });
+				localStorage.setItem("dataCharacters", JSON.stringify(data.results));
             },
+			getCharacterDetails: async (uid) => {
+				const store = getStore();
+				const uri = `${store.baseURLStarWars}/people/${uid}`;
+				const response = await fetch (uri)
+				if (!response.ok) {
+                    console.log('Error:', response.status, response.statusText);
+                    return;
+                }
+				const data = await response.json();
+				console.log(data)
+				setStore({ currentCharacterDetail: data.result.properties});
+			},
+			clearCharactersStorage: () => {
+				localStorage.removeItem("dataCharacters");
+				setStore({ dataCharacters: [] });
+			},
 			getStarShips: async () => {
                 const uri = `${getStore().baseURLStarWars}/starships`;
                 const response = await fetch(uri);

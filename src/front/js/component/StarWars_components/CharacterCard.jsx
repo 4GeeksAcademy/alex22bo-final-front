@@ -1,17 +1,27 @@
-import React, { useContext } from "react";
-import { Context } from "../../store/appContext.js";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const CharacterCard = ({ data }) => {
-    const { store } = useContext(Context)
+    const navigate = useNavigate();
 
-    const handleDetail = () => { };
+
+
+    const handleDetail = () => {
+        navigate(`/character-detail/${data.uid}`)
+
+     };
 
     return (
         <div className="col">
-            <div className="card border-dark rounded my-3 mx-2 text-bg-dark">
-                <img src="https://starwars-visualguide.com/assets/img/characters/1.jpg" className="card-img-top" alt="..." />
-                <div className="card-body">
-                    <h2 className="mb-1 fw-bold">{data.name}</h2>
+            <div className="card text-bg-dark h-100">
+                <img src="https://img.freepik.com/vector-premium/no-hay-foto-disponible-icono-vector-simbolo-imagen-predeterminado-imagen-proximamente-sitio-web-o-aplicacion-movil_87543-10615.jpg" className="card-img-top" alt="imagen no disponible" />
+                <div className="card-body d-flex flex-column">
+                    <h5 className="card-title fw-bold">{data.name}</h5>
+                    <div className="mt-auto">
+                        <button className="btn btn-outline-light me-2" onClick={handleDetail}>Details</button>
+                        <button className="btn btn-outline-warning"><i className="fa fa-heart"></i></button>
+
+                    </div>
                 </div>
             </div>
 

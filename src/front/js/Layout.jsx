@@ -15,9 +15,10 @@ import { Login } from "./pages/Login.jsx";
 import { Updatecontact } from "./component/Updatecontact.jsx";
 import { Contactlist } from "./pages/Contactlist.jsx";
 import { NewContact } from "./component/NewContact.jsx";
-import { Characters } from "./pages/StarWars_Pages/Characters.jsx";
 import { Planets } from "./pages/StarWars_Pages/Planets.jsx";
 import { Starships } from "./pages/StarWars_Pages/Starships.jsx";
+import { CharactersPage } from "./pages/StarWars_Pages/CharactersPage.jsx";
+import { CharacterDetailPage } from "./pages/StarWars_Pages/CharacterDetailPage.jsx";
 
 
 
@@ -35,9 +36,10 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Characters />} path="/characters" />
                         <Route element={<Planets />} path="/planets" />
                         <Route element={<Starships/>} path="/starships" />
+                        <Route element={<CharactersPage/>} path="/characters-page" />
+                        <Route element={<CharacterDetailPage/>} path="/character-detail/:uid"/>
                         
                         <Route element={<Contactlist/>} path="/contactlist"/>
                         <Route element={<NewContact/>} path="/newcontact"/>                       
