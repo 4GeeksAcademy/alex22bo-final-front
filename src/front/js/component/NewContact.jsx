@@ -36,7 +36,7 @@ export const NewContact = () => {
 
                 <div className="mb-3">
                     <label htmlFor="address" className="form-label">Email</label>
-                    <input type="text" className="form-control" id="address" placeholder="Enter address" value={newEmail} onChange={(event) => { setNewEmail(event.target.value) }} />
+                    <input type="text" className="form-control" id="address" placeholder="Enter email" value={newEmail} onChange={(event) => { setNewEmail(event.target.value) }} />
                 </div>
 
                 <div className="mb-3">

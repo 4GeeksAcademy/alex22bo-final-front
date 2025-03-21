@@ -1,21 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../../store/appContext";
 
-export const CharacterCard = ({ data }) => {
-    const {actions} = useContext(Context)
+export const PlanetCard = ({ data }) => {
     const navigate = useNavigate();
 
     const handleDetail = () => {
-        navigate(`/character-detail/${data.uid}`)
-    };
-
-    const imageURL = actions.getCharactersImage(data.uid);
+        navigate(`//${data.uid}`)
+    }
 
     return (
         <div className="col">
             <div className="card text-bg-dark h-100">
-                <img src={imageURL} className="card-img-top" alt="imagen no disponible" />
+                <img src="https://starwars-visualguide.com/assets/img/planets/4.jpg" className="card-img-top" alt="imagen no disponible" />
                 <div className="card-body d-flex flex-column">
                     <h5 className="card-title fw-bold">{data.name}</h5>
                     <div className="mt-auto">

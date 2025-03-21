@@ -1,21 +1,17 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../../store/appContext";
 
-export const CharacterCard = ({ data }) => {
-    const {actions} = useContext(Context)
+export const StarshipCard = ({ data }) => {
     const navigate = useNavigate();
 
     const handleDetail = () => {
-        navigate(`/character-detail/${data.uid}`)
-    };
-
-    const imageURL = actions.getCharactersImage(data.uid);
+        navigate(`/starship-detail/${data.uid}`)
+    }
 
     return (
         <div className="col">
             <div className="card text-bg-dark h-100">
-                <img src={imageURL} className="card-img-top" alt="imagen no disponible" />
+                <img src="https://img.freepik.com/vector-premium/no-hay-foto-disponible-icono-vector-simbolo-imagen-predeterminado-imagen-proximamente-sitio-web-o-aplicacion-movil_87543-10615.jpg" className="card-img-top" alt="imagen no disponible" />
                 <div className="card-body d-flex flex-column">
                     <h5 className="card-title fw-bold">{data.name}</h5>
                     <div className="mt-auto">

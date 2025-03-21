@@ -15,10 +15,12 @@ import { Login } from "./pages/Login.jsx";
 import { Updatecontact } from "./component/Updatecontact.jsx";
 import { Contactlist } from "./pages/Contactlist.jsx";
 import { NewContact } from "./component/NewContact.jsx";
-import { Planets } from "./pages/StarWars_Pages/Planets.jsx";
-import { Starships } from "./pages/StarWars_Pages/Starships.jsx";
+// STAR WARS
 import { CharactersPage } from "./pages/StarWars_Pages/CharactersPage.jsx";
 import { CharacterDetailPage } from "./pages/StarWars_Pages/CharacterDetailPage.jsx";
+import { StarshipsPage } from "./pages/StarWars_Pages/StarshipsPage.jsx";
+import { StarShipDetailPage } from "./pages/StarWars_Pages/StarshipDetailPage.jsx";
+import { PlanetsPage } from "./pages/StarWars_Pages/PlanetsPage.jsx";
 
 
 
@@ -36,10 +38,13 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Planets />} path="/planets" />
-                        <Route element={<Starships/>} path="/starships" />
                         <Route element={<CharactersPage/>} path="/characters-page" />
                         <Route element={<CharacterDetailPage/>} path="/character-detail/:uid"/>
+                        <Route element={<StarshipsPage />} path="/starships-page"/>
+                        <Route element={<StarShipDetailPage/>} path="/starship-detail/:uid"/>
+                        <Route element={<PlanetsPage/>} path="/planets-page"/>
+                        
+                        
                         
                         <Route element={<Contactlist/>} path="/contactlist"/>
                         <Route element={<NewContact/>} path="/newcontact"/>                       

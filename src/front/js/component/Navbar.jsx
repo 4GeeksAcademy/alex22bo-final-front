@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context)
-	const Navigate = useNavigate()
+	const navigate = useNavigate()
 
 	// Usar el handleEdit del componente editar del contactlist para el momento en que se va a llamar el acceso a cada pestaña
 	const handleEdit = (contact) => {
@@ -26,10 +26,10 @@ export const Navbar = () => {
 							<Link className="nav-link text-warning" to="/characters-page">{'Characters'}</Link>
 						</li>
 						<li className="nav-item">
-							<Link className="nav-link text-warning" aria-current="page" to="/planets">{'Planets'}</Link>
+							<Link className="nav-link text-warning" aria-current="page" to="/planets-page">{'Planets'}</Link>
 						</li>
 						<li className="nav-item">
-							<Link className="nav-link text-warning" to="/starships">{'Starships'}</Link>
+							<Link className="nav-link text-warning" to="/starships-page">{'Starships'}</Link>
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link text-warning" to="/contactlist">{'Contacts'}</Link>

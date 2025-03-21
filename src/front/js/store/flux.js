@@ -115,7 +115,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				getActions().getContacts();
 			},
-			getCharacter: async () => {
+			getCharacters: async () => {
 				const store = getStore();
 				const storedCharacters = localStorage.getItem("dataCharacters");
 				if(storedCharacters){
@@ -123,15 +123,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
                 const uri = `${store.baseURLStarWars}/people`;
-                const response = await fetch(uri);
-                if (!response.ok) {
-                    console.log('Error:', response.status, response.statusText);
+                const swapiResponse = await fetch(uri);
+                if (!swapiResponse.ok) {
+                    console.log('Error:', swapiResponse.status, swapiResponse.statusText);
                     return;
                 }
-                const data = await response.json();
-                setStore({ dataCharacters: data.results });
-				localStorage.setItem("dataCharacters", JSON.stringify(data.results));
-            },
+                const swapiData = await swapiResponse.json();
+
+				const  akababUri = "https://akabab.github.io/starwars-api/api/all.json";
+				const akababResponse = await fetch( akababUri);
+				if(!akababResponse.ok){
+					console.log('Error:', akababResponse.status, akababResponse.statusText);
+                    return;
+				}
+				const akababData = await akababResponse.json();
+				const mergedCharacters = swapiData.results.map(character => {
+					const id = parseInt(character.uid);
+					const akababObj = akababData.find(item => item.id === id);
+					return{
+						...character,
+						image:akababObj ? akababObj.image : "https://img.freepik.com/vector-premium/no-hay-foto-disponible-icono-vector-simbolo-imagen-predeterminado-imagen-proximamente-sitio-web-o-aplicacion-movil_87543-10615.jpg"
+					}
+				});
+                setStore({ dataCharacters: mergedCharacters });
+				localStorage.setItem("dataCharacters", JSON.stringify(mergedCharacters));
+			},
+			getCharactersImage: (uid) => {
+				const store = getStore();
+				const character = store.dataCharacters.find(item => item.uid === uid);
+				return character ? character.image : "https://img.freepik.com/vector-premium/no-hay-foto-disponible-icono-vector-simbolo-imagen-predeterminado-imagen-proximamente-sitio-web-o-aplicacion-movil_87543-10615.jpg"
+
+			},			
 			getCharacterDetails: async (uid) => {
 				const store = getStore();
 				const uri = `${store.baseURLStarWars}/people/${uid}`;
@@ -141,37 +163,78 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                 }
 				const data = await response.json();
-				console.log(data)
-				setStore({ currentCharacterDetail: data.result.properties});
+				setStore({ currentCharacterDetail: data.result.properties });
 			},
 			clearCharactersStorage: () => {
 				localStorage.removeItem("dataCharacters");
 				setStore({ dataCharacters: [] });
 			},
 			getStarShips: async () => {
-                const uri = `${getStore().baseURLStarWars}/starships`;
+				const store = getStore();
+				const storedStarships = localStorage.getItem("dataStarships");
+				if(storedStarships){
+					setStore({dataStarships: JSON.parse(storedStarships)});
+					return
+				}
+                const uri = `${store.baseURLStarWars}/starships`;
                 const response = await fetch(uri);
                 if (!response.ok) {
                     console.log('Error:', response.status, response.statusText);
                     return;
                 }
                 const data = await response.json();
-				console.log(data)
                 setStore({ dataStarships: data.results });
+				localStorage.setItem("dataStarships", JSON.stringify(data.results));				
             },
+			getStarShipDetails: async (uid) =>{
+				const store = getStore();
+				const uri = `${store.baseURLStarWars}/starships/${uid}`;
+				const response = await fetch (uri)
+				if (!response.ok) {
+                    console.log('Error:', response.status, response.statusText);
+                    return;
+                }
+				const data = await response.json();
+				setStore({ currentStarshipDetail: data.result.properties });
+
+			},
+			clearStarshipsStorage: () => {
+				localStorage.removeItem("dataStarships");
+				setStore({ dataStarships: [] });
+			},
 			getPlanets: async () => {
-                const uri = `${getStore().baseURLStarWars}/planets`;
+				const store = getStore();
+				const storedPlanets = localStorage.getItem("dataPlanets");
+				if (storedPlanets) {
+					setStore({ dataPlanets: JSON.parse(storedPlanets) });
+					return
+				}
+                const uri = `${store.baseURLStarWars}/planets`;
                 const response = await fetch(uri);
                 if (!response.ok) {
                     console.log('Error:', response.status, response.statusText);
                     return;
                 }
                 const data = await response.json();
-				console.log(data)
                 setStore({ dataPlanets: data.results });
-            }
-
-
+				localStorage.setItem("dataPlanets", JSON.stringify(data.results));
+            },
+			getPlanetDetails: async(uid) => {
+				const store = getStore();
+				const uri = `${store.baseURLStarWars}/planets/${uid}`;
+				const response = await fetch (uri)
+				if (!response.ok) {
+                    console.log('Error:', response.status, response.statusText);
+                    return;
+                }
+				const data = await response.json();
+				console.log(data)
+				setStore({ currentPlanetDetail: data.result.properties });
+			},
+			clearPlanetsStorage: () => {
+				localStorage.removeItem("dataPlanets");
+				setStore({ dataPlanets: [] });
+			}
 		}
 	};
 };
