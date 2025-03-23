@@ -3,15 +3,14 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
 export const Home = () => {
-	
+
 
 	return (
-		<div>
-
-			<div className="container mt-1">
-			<img src="https://as2.ftcdn.net/v2/jpg/02/25/37/11/1000_F_225371121_9ohf0f4olaFTnlTqnZXZDJcjPnN5mism.jpg"
-                            className="" alt="underconstruction" />
-		</div>
+		<div className="container-fluid d-flex justify-content-center align-items-center"  style={{ minHeight: "80vh" }}>
+			<div className="container">
+				<img src="https://i.blogs.es/1da08b/1366_2000-9-/1366_2000.jpeg"
+					className="img-fluid" alt="blog Star Wars" style={{ maxWidth: "100%", height: "auto" }}/>
+			</div>
 		</div>
 
 
