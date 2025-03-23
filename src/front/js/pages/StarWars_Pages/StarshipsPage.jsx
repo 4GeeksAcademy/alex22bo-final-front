@@ -6,11 +6,16 @@ export const StarshipsPage = () => {
     const { store, actions } = useContext(Context)
 
     useEffect(() => {
-        actions.getStarShips();
-        return () => {
-            actions.clearStarshipsStorage();
-        }
-    }, [])
+        actions.getStarShips();        
+    }, []);
+
+    const goPreious = () => {
+        actions.navigateStarships(store.starshipsPrevious);
+    }
+
+    const goNext = () => {
+        actions.navigateStarships(store.starshipsNext);
+    }
 
     return (
         <div className="container-fluid py-4" style={{ backgroundColor: "#3A3A3A", minHeight: "100vh" }}>
@@ -23,6 +28,11 @@ export const StarshipsPage = () => {
                             : (<p className="text-light text-center">Loading starships...</p>)}                        
                     </div>
                 </div>
+            </div>
+            {/* Paginación */}
+            <div className="d-flex justify-content-center mt-4">
+                <button className="btn btn-primary me-2" onClick={goPreious} disabled={!store.starshipsPrevious}>Previous</button>
+                <button className="btn btn-primary me-2" onClick={goNext} disabled={!store.starshipsNext}>Next</button>
             </div>
         </div>
     )

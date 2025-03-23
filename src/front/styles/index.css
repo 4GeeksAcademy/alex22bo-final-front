@@ -1,3 +1,146 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+    background-image: linear-gradient(to bottom, #111111, #000000);
+    border-bottom: 2px solid #ffc107;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.navbar-nav .nav-link {
+    color: #ffc107;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffea00;
+}
+
+/* Card Components */
+.card {
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    border: 2px solid #ffc107;
+    box-shadow: 0px 0px 10px 2px #ffec99;
+    margin: 0 auto;
+}
+
+.card-title {
+    color: #ffc107;
+    font-size: 1.25rem;
+}
+
+.card-body {
+    background-color: rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-body .btn {
+    margin-top: auto;
+}
+
+.card img {
+    border-radius: 5px;
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Custom Cards */
+.card-custom {
+    background-color: #2d2d2d;
+    color: white;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card-custom:hover {
+    transform: scale(1.02);
+}
+
+/* Favorite Icon */
+.heart-icon {
+    transition: all 0.3s ease;
+}
+
+.heart-icon:hover {
+    filter: drop-shadow(0 0 5px red);
+    transform: scale(1.1);
+}
+
+/* Contact Image */
+.contact-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+/* Misc Utilities */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.d-flex.gap-3 span {
+    font-size: 1.2rem;
+}
+
+/* Buttons */
+.btn {
+    background-color: #ffc107;
+    color: #000;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #ffea00;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+    background: #111111;
+    color: #ffc107;
+}
+
+.footer a {
+    color: #ffc107;
+}
+
+.footer a:hover {
+    color: #ffea00;
+}
+
+.darth-icon {
+	height: 55px;
+	cursor: pointer;
+	transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.darth-icon:hover {
+	filter: drop-shadow(0 0 10px red);
+	transform: scale(1.1);
+}
+
+.darth-icon-center {
+	z-index: 10;
+}

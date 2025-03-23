@@ -8,6 +8,12 @@ export const CharacterDetailPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (store.dataCharacters.length === 0) {
+            const storedCharacters = localStorage.getItem("dataCharacters");
+            if (storedCharacters) {
+                setStore({ dataCharacters: JSON.parse(storedCharacters) });
+            }
+        }
         actions.getCharacterDetails(uid);
     }, [uid]);
 
@@ -23,7 +29,7 @@ export const CharacterDetailPage = () => {
         gender
     } = currentCharacterDetail;
 
-    const imageURL = actions.getCharacterImage(uid);
+    const imageURL = actions.getCharactersImage(uid);
 
     return (
         <div className="container d-flex justify-content-center align-items-center" style={{ backgroundColor: "#2f2f2f", minHeight: "50vh", padding: "3rem" }}>

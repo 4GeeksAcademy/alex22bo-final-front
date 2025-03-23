@@ -8,7 +8,7 @@ export const PlanetDetailPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        actions.getCharacterDetails(uid);
+        actions.getPlanetDetails(uid);
     }, [uid]);
 
     const { currentPlanetDetail } = store;
@@ -30,7 +30,7 @@ export const PlanetDetailPage = () => {
                 <div className="card-body">
                     <div className="row">
                         <div className="cvol-12 col-md-4 mb-4">
-                            <img src="https://img.freepik.com/vector-premium/no-hay-foto-disponible-icono-vector-simbolo-imagen-predeterminado-imagen-proximamente-sitio-web-o-aplicacion-movil_87543-10615.jpg" alt="Imagen no disponible" className="img-fluid rounded" />
+                            <img src="https://user-images.githubusercontent.com/5948318/38711585-ef6a8970-3e9c-11e8-96c7-fc8a610cdde2.png" alt="Imagen no disponible" className="img-fluid rounded" />
                         </div>
                         <div className="col-12 col-md-8 text-light">
                             <h1 className="mb-4 py-2">{name}</h1>
@@ -52,3 +52,4 @@ export const PlanetDetailPage = () => {
         </div>
     )
 }
+

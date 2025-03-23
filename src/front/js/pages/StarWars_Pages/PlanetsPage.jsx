@@ -6,11 +6,16 @@ export const PlanetsPage = () => {
     const { store, actions } = useContext(Context)
 
     useEffect(() => {
-        actions.getPlanets();
-        return () => {
-            actions.clearPlanetsStorage();
-        }
+        actions.getPlanets();        
     }, [])
+
+    const goPreious = () => {
+        actions.navigatePlanets(store.planetsPrevious);
+    }
+
+    const goNext = () => {
+        actions.navigatePlanets(store.planetsNext);
+    }
 
     return (
         <div className="container-fluid py-4" style={{ backgroundColor: "#3A3A3A", minHeight: "100vh" }}>
@@ -23,6 +28,11 @@ export const PlanetsPage = () => {
                             : (<p className="text-light text-center">Loading Planets...</p>)}
                     </div>
                 </div>
+            </div>
+            {/* Paginación */}
+            <div className="d-flex justify-content-center mt-4">
+                <button className="btn btn-primary me-2" onClick={goPreious} disabled={!store.planetsPrevious}>Previous</button>
+                <button className="btn btn-primary me-2" onClick={goNext} disabled={!store.planetsNext}>Next</button>
             </div>
         </div>
     )

@@ -1,27 +1,26 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../store/appContext";
+import React from "react";
+import { Link } from "react-router-dom";
+import { FavoritesDropdown } from "./FavoritesDropdown.jsx";
 
 export const Navbar = () => {
-	const { store, actions } = useContext(Context)
-	const navigate = useNavigate()
-
-	// Usar el handleEdit del componente editar del contactlist para el momento en que se va a llamar el acceso a cada pestaña
-	const handleEdit = (contact) => {
-		console.log(contact);
-		actions.setCurrentContact(contact);
-		navigate("")
-	}
 
 	return (
-		<nav className="navbar navbar-expand-lg bg-dark">
-			<div className="container-fluid">
-				<Link className="navbar-brand text-warning" to="/">STAR WARS</Link>
-				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarColor02">
-					<ul className="navbar-nav me-auto">
+		<nav className="navbar navbar-expand-lg bg-dark position-relative">
+			<div className="container-fluid d-flex justify-content-between align-items-center">
+				{/* Izquierda */}
+				<Link className="navbar-brand" to="/">
+					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Star_Wars_Logo.svg/2560px-Star_Wars_Logo.svg.png" alt="Star Wars Logo" style={{ height: "80px" }} />
+				</Link>
+				{/* Centro */}
+				<div className="darth-icon-center position-absolute top-50 start-50 translate-middle">
+					<img src="https://img.icons8.com/?size=512&id=35734&format=png" alt="Darth Vader" className="darth-icon" />
+				</div>
+				{/* Derecha */}
+				<div className="collapse navbar-collapse justify-content-end" id="navbarColor02">
+					<ul className="navbar-nav d-flex align-items-center gap-3">
+						<li>
+							<FavoritesDropdown />
+						</li>
 						<li className="nav-item">
 							<Link className="nav-link text-warning" to="/characters-page">{'Characters'}</Link>
 						</li>
@@ -34,10 +33,11 @@ export const Navbar = () => {
 						<li className="nav-item">
 							<Link className="nav-link text-warning" to="/contactlist">{'Contacts'}</Link>
 						</li>
-						
+
 					</ul>
 				</div>
 			</div>
+
 		</nav>
 
 
