@@ -323,32 +323,47 @@ def follower():
 @api.route('/characters', methods=['GET'])
 def characters():
     response_body = {}
-    rows = db.session.execute(db.select(Characters)).scalars()
-    if not rows:
-        url = 'https://swapi.tech/api/people/'
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            for row in data['results']:
-                character_list= requests.get(row['url'])
-                if character_list.status_code == 200:
-                    character_data = character_list.json()
-                    character_properties = character_data['result']['properties']
-                    print(character_properties)
-                    response_body['results'].append({ "name": character_properties.get('name'),
-                                                    "height": character_properties.get('height'),
-                                                    "mass": character_properties.get('mass'),
-                                                    "hair_color": character_properties.get('hair_color'),
-                                                    "skin_color": character_properties.get('skin_color'),
-                                                    "eye_color": character_properties.get('eye_color'),
-                                                    "birth_year": character_properties.get('birth_year'),
-                                                    "gender": character_properties.get('gender')})
-                    response_body['message'] = f'Datos obtenidos desde la API Star Wars'
-                    return response_body, 200 
-            response_body['message'] = f'Respuesta desde el {request.method}'
-            response_body['results'] = character_data
+    rows = db.session.execute(db.select(Characters)).scalars().all()
+    if rows:
+            response_body['message'] = 'Datos obtenidos desde la base de datos'
+            response_body['results'] = [row.serialize() for row in rows]
+            return response_body, 200
+    response_body['results'] = []
+    url = 'https://swapi.tech/api/people/'
+    response = requests.get(url)
+    if response.status_code != 200:
+            response_body['message'] = 'Error al conectar con la API externa de Star Wars'
+            return response_body, 500
+    data = response.json()
+    for row in data['results']:
+        character_list = requests.get(row['url'])
+        if character_list.status_code == 200:
+            character_data = character_list.json()
+            character_properties = character_data['result']['properties']
+            response_body['results'].append({
+                "name": character_properties.get('name'),
+                "height": character_properties.get('height'),
+                "mass": character_properties.get('mass'),
+                "hair_color": character_properties.get('hair_color'),
+                "skin_color": character_properties.get('skin_color'),
+                "eye_color": character_properties.get('eye_color'),
+                "birth_year": character_properties.get('birth_year'),
+                "gender": character_properties.get('gender')
+            })
+    response_body['message'] = 'Datos obtenidos desde la API Star Wars'
     return response_body, 200
 
+
+@api.route('/character/<int:character_id>', methods=['GET'])
+def character(character_id):
+    response_body = {}
+    row = db.session.execute(db.select(Characters).where(Characters.id == character_id)).scalar()
+    if not row:
+        response_body['message'] = f"Personaje con ID {character_id} no encontrado"
+        return response_body, 404
+    response_body['results'] = row.serialize()
+    return response_body, 200
+    
 
 @api.route('/planets', methods=['GET'])
 def planets():
@@ -377,3 +392,14 @@ def planets():
             response_body['message'] = f'Respuesta desde el {request.method}'
             response_body['results'] = planet_data
             return response_body, 200            
+
+
+@api.route('/planet/<int:planet_id>', methods=['GET'])
+def planet(planet_id):
+    response_body = {}
+    row = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
+    if not row:
+        response_body['message'] = f"Planeta con ID {planet_id} no encontrado"
+        return response_body, 404
+    response_body['results'] = row.serialize()
+    return response_body, 200
