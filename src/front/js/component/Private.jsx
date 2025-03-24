@@ -6,15 +6,19 @@ export const Private = () => {
     const { store } = useContext(Context);
     const navigate = useNavigate();
 
-    useEffect(() =>{
-        if (!store.isLogged){
+    useEffect(() => {
+        const token = sessionStorage.getItem("token")
+        if (!token || !store.isLogged) {
             navigate('/login')
         }
-    }, [store.isLogged, navigate])
+    }, [store.isLogged])
 
-    return store.isLogged ? (
-        <div>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUTxUQay2IG3GHmq2uppGon9DkJvU0rfopiQ&s" alt="welcome" />
+    return (
+        <div className="container-fluid d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+            <div>
+                
+            </div>
+            <img src="https://collinsrace1.wordpress.com/wp-content/uploads/2023/05/sith-darth.png" alt="welcome" />
         </div>
-    ) : null
+    )
 };

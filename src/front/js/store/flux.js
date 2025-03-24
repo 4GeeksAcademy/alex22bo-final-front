@@ -83,7 +83,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json()
-				localStorage.setItem('token', data.access_token)
+				sessionStorage.setItem('token', data.access_token)
 				setStore({
 					isLogged: true,
 					user: data.results,
@@ -107,7 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json();
-				localStorage.setItem('token', data.access_token);
+				sessionStorage.setItem('token', data.access_token);
 				setStore({
 					isLogged: true,
 					user: data.results,
@@ -119,7 +119,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const options = {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('token')}`
+						Authorization: `Bearer ${sessionStorage.getItem('token')}`
 					}
 				};
 				const response = await fetch(uri, options);
@@ -135,7 +135,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const options = {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('token')}`
+						Authorization: `Bearer ${sessionStorage.getItem('token')}`
 					}
 				}
 				const response = await fetch(uri, options);

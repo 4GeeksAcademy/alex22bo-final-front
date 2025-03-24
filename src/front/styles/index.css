@@ -144,3 +144,49 @@ a:hover {
 .darth-icon-center {
 	z-index: 10;
 }
+
+.custom-signup-btn {
+	background-color: #6c757d; /* gris Bootstrap */
+	color: #fff;
+	border: none;
+	transition: all 0.3s ease-in-out;
+}
+
+.custom-signup-btn:hover {
+	background-color: #ffc107; /* Amarillo proyecto */
+	color: #000;
+	transform: scale(1.05);
+}
+
+.login-card {
+    max-width: 400px;
+    width: 100%;
+    background-color: #1e1e1e;
+    border: 1px solid #ffc107;
+    box-shadow: 0 0 10px #ffc107;
+    color: white;
+}
+
+.darth-icon {
+	height: 55px;
+	cursor: pointer;
+	transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.darth-icon:hover {
+	filter: drop-shadow(0 0 10px red);
+	transform: scale(1.1);
+}
+
+.blink-red {
+	animation: blink 1s infinite;
+}
+
+@keyframes blink {
+	0%, 100% {
+		filter: drop-shadow(0 0 5px red);
+	}
+	50% {
+		filter: drop-shadow(0 0 15px red);
+	}
+}

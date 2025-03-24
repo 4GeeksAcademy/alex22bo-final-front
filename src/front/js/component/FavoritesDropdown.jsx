@@ -17,7 +17,7 @@ export const FavoritesDropdown = () => {
 
     return (
         <div className="dropdown position-relative">
-            <button className="btn dropdown-toggle custom-dropdown-btn d-flex align-items-center gap-1" type="button" id="favoritesDropdown" aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}>
+            <button className="btn btn-sm dropdown-toggle custom-dropdown-btn d-flex align-items-center gap-1 px-2 py-1" type="button" id="favoritesDropdown" aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}>
                 <span style={{ marginRight: "8px" }}>{store.favorites.length}</span>
                 <FaHeart className={`heart-icon ${hasFavorites ? "text-danger" : "text-secondary"}`} />
             </button>

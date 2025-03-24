@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
-import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import { Private } from "../component/Private.jsx";
 
 export const Home = () => {
 
