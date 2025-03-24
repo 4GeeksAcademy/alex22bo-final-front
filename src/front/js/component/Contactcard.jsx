@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faPencil, faPhoneFlip, faEnvelope, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import "../../styles/contactstyle.css";
 
 export const Contactcard = ({ data }) => {
     const { actions } = useContext(Context);
@@ -37,8 +36,6 @@ export const Contactcard = ({ data }) => {
                         <p className="mb-1"><FontAwesomeIcon icon={faPhoneFlip} className="me-2" />{data.phone}</p>
                         <p className="mb-1"><FontAwesomeIcon icon={faEnvelope} className="me-2" />{data.email}</p>
                     </div>
-
-
                     {/* Iconos edición */}
                     <div className="d-flex gap-3">
                         <span className="text-primary cursor-pointer" onClick={() => handleEdit(data)}><FontAwesomeIcon icon={faPencil} /></span>
