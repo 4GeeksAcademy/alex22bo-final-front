@@ -6,3 +6,9 @@
     on that page only (the ones not reused in other pages).
 */
 
+body {
+    background-color: #000000;
+    
+    font-family: 'Star Jedi', sans-serif;
+}
+

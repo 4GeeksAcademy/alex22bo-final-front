@@ -15,6 +15,13 @@ import { Login } from "./pages/Login.jsx";
 import { Updatecontact } from "./component/Updatecontact.jsx";
 import { Contactlist } from "./pages/Contactlist.jsx";
 import { NewContact } from "./component/NewContact.jsx";
+// STAR WARS
+import { CharactersPage } from "./pages/StarWars_Pages/CharactersPage.jsx";
+import { CharacterDetailPage } from "./pages/StarWars_Pages/CharacterDetailPage.jsx";
+import { StarshipsPage } from "./pages/StarWars_Pages/StarshipsPage.jsx";
+import { StarShipDetailPage } from "./pages/StarWars_Pages/StarshipDetailPage.jsx";
+import { PlanetsPage } from "./pages/StarWars_Pages/PlanetsPage.jsx";
+import { PlanetDetailPage } from "./pages/StarWars_Pages/PlanetDetailPage.jsx";
 import { Alert } from "./component/Alert.jsx";
 import { Private } from "./component/Private.jsx";
 
@@ -34,9 +41,18 @@ const Layout = () => {
                     <Alert />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        {/* STAR WARS */}
+                        <Route element={<CharactersPage/>} path="/characters-page" />
+                        <Route element={<CharacterDetailPage/>} path="/character-detail/:uid"/>
+                        <Route element={<StarshipsPage />} path="/starships-page"/>
+                        <Route element={<StarShipDetailPage/>} path="/starship-detail/:uid"/>
+                        <Route element={<PlanetsPage />} path="/planets-page"/>
+                        <Route element={<PlanetDetailPage />} path ="/planet-detail/:uid"/>
+                        {/* Contact - List */}                            
                         <Route element={<Contactlist/>} path="/contactlist"/>
                         <Route element={<NewContact/>} path="/newcontact"/>                       
                         <Route element={<Updatecontact/>} path="/updatecontact"/>
+                        {/* JWT */}
                         <Route element={<Private/>} path="/private"/>
                         <Route element={<Login/>} path="/login"/>                      
                         <Route element={<Demo />} path="/demo" />
