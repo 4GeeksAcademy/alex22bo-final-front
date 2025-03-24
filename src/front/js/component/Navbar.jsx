@@ -1,26 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FavoritesDropdown } from "./FavoritesDropdown.jsx";
+import { Context } from "../store/appContext.js";
 
 export const Navbar = () => {
-	// Code JS
-	// 1. Desestructuro store y/o action
-	// 2. Utilizando el hook useContext de "react"
-	// 3. enviandole el parametro Context definido en appContext.js
 	const {store, actions} = useContext(Context)
-	// 4. Utilizo cualquier clave de store o de action en mi componente.
-
-	const Navigate = useNavigate()
-
-	//accessProtected
+	const navigate = useNavigate();
 
 	const handleLogin = () => {
 		if (store.isLogged){
 			actions.setIsLogged(false);
 			actions.setUser({})
-			Navigate('/')
+			navigate('/')
 		}else{
-			Navigate('/Login')
+			navigate('/Login')
 		}
 	}
 
