@@ -22,6 +22,9 @@ import { StarshipsPage } from "./pages/StarWars_Pages/StarshipsPage.jsx";
 import { StarShipDetailPage } from "./pages/StarWars_Pages/StarshipDetailPage.jsx";
 import { PlanetsPage } from "./pages/StarWars_Pages/PlanetsPage.jsx";
 import { PlanetDetailPage } from "./pages/StarWars_Pages/PlanetDetailPage.jsx";
+import { Alert } from "./component/Alert.jsx";
+import { Private } from "./component/Private.jsx";
+import { SignUp } from "./component/SignUp.jsx";
 
 
 
@@ -30,13 +33,14 @@ const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <Alert />
                     <Routes>
                         <Route element={<Home />} path="/" />
                         {/* STAR WARS */}
@@ -47,14 +51,16 @@ const Layout = () => {
                         <Route element={<PlanetsPage />} path="/planets-page"/>
                         <Route element={<PlanetDetailPage />} path ="/planet-detail/:uid"/>
                         {/* Contact - List */}                            
-                        <Route element={<Contactlist/>} path="/contactlist"/>
-                        <Route element={<NewContact/>} path="/newcontact"/>                       
-                        <Route element={<Updatecontact/>} path="/updatecontact"/>
+                        <Route element={<Contactlist />} path="/contactlist" />
+                        <Route element={<NewContact />} path="/newcontact" />
+                        <Route element={<Updatecontact />} path="/updatecontact" />
                         {/* JWT */}
-                        <Route element={<Login/>} path="/login"/>
+                        <Route element={<Private />} path="/private" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<SignUp />} path="/signup" />                        
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<Error404/>} path="*" />
+                        <Route element={<Error404 />} path="*" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

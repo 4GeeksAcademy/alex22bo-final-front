@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
 export const Home = () => {
@@ -12,7 +11,5 @@ export const Home = () => {
 					className="img-fluid" alt="blog Star Wars" style={{ maxWidth: "100%", height: "auto" }}/>
 			</div>
 		</div>
-
-
 	);
 };

@@ -1,8 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FavoritesDropdown } from "./FavoritesDropdown.jsx";
+import { Context } from "../store/appContext.js";
 
 export const Navbar = () => {
+	const { store, actions } = useContext(Context)
+	const navigate = useNavigate();
+
+	const handleLogin = () => {
+		if (store.isLogged) {
+			actions.setIsLogged(false);
+			actions.setUser({})
+			navigate('/')
+		} else {
+			navigate('/Login')
+		}
+	}
+
+	const handleLogout = () => {
+		actions.setIsLogged(false)
+		actions.setUser({});
+		sessionStorage.removeItem("token")
+		navigate("/")
+	}
+
+	const handleSignup = () => {
+		navigate("/signup")
+
+	}
 
 	return (
 		<nav className="navbar navbar-expand-lg bg-dark position-relative">
@@ -12,8 +37,8 @@ export const Navbar = () => {
 					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Star_Wars_Logo.svg/2560px-Star_Wars_Logo.svg.png" alt="Star Wars Logo" style={{ height: "80px" }} />
 				</Link>
 				{/* Centro */}
-				<div className="darth-icon-center position-absolute top-50 start-50 translate-middle">
-					<img src="https://img.icons8.com/?size=512&id=35734&format=png" alt="Darth Vader" className="darth-icon" />
+				<div className="darth-icon-center position-absolute top-50 start-50 translate-middle" onClick={() => store.isLogged && navigate("/private")}>
+					<img src="https://img.icons8.com/?size=512&id=35734&format=png"	alt="Darth Vader" className={`darth-icon ${store.isLogged ? "blink-red" : ""}`}	/>
 				</div>
 				{/* Derecha */}
 				<div className="collapse navbar-collapse justify-content-end" id="navbarColor02">
@@ -35,6 +60,14 @@ export const Navbar = () => {
 						</li>
 
 					</ul>
+					<div className="d-flex gap-2 align-items-center">
+						<button className="btn btn-outline-secondary custom-signup-btn" onClick={handleSignup}>Sign Up</button>
+						{store.isLogged ? (
+							<button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+						) : (
+							<button className="btn btn-outline-success" onClick={handleLogin}>Login</button>
+						)}
+					</div>
 				</div>
 			</div>
 

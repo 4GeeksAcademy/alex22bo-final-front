@@ -5,11 +5,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			demo: [{ title: "FIRST", background: "white", initial: "white" },
 			{ title: "SECOND", background: "white", initial: "white" }],
 			cohorte: 'Luis Borjas',
+			users: [],
+			user: {},
 			isLogged: false,
 			baseURLContact: "https://playground.4geeks.com/contact",
 			contacts: [],
-			user: "alex22bo",
 			currentContact: {},
+			alert: {text: '', background: 'primary', visible: false},
 			baseURLStarWars: "https://www.swapi.tech/api",
 			//Characters
 			dataCharacters: [],
@@ -28,7 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			starshipsNext: null,
     		starshipsPrevious: null,
 			favorites: [],
-		},
+			},
 		actions: {
 			setIsLogged: (value) => { setStore({ isLogged: value }) },
 			setUser: (currentUser) => { setStore({ user: currentUser }) },
@@ -62,9 +64,91 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 			setCurrentContact: (item) => { setStore({ currentContact: item }) },
+			setAlert: (newAlert) => setStore({alert: newAlert}),
+			login: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					if (response.status == 401) {
+						setStore({ alert: { text: 'Email o contraseña no valido', background: 'danger', visible: true } })
+					}
+					return
+				}
+				const data = await response.json()
+				sessionStorage.setItem('token', data.access_token)
+				setStore({
+					isLogged: true,
+					user: data.results,
+				})
+			},
+			signup: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/signup`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					if (response.status === 400) {
+						setStore({ alert: { text: 'Registro no es valido', background: 'danger', visible: true }})
+					}
+					return
+				}
+				const data = await response.json();
+				sessionStorage.setItem('token', data.access_token);
+				setStore({
+					isLogged: true,
+					user: data.results,
+					alert: { text: 'Registro existoso', background: 'success', visible: true }
+				});
+			},
+			getUser: async (userId) => {
+				const uri = `${process.env.BACKEND_URL}/api/users/${userId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${sessionStorage.getItem('token')}`
+					}
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				console.log(data)
+			},
+			accessProtected: async () => {
+				const uri = `${process.env.BACKEND_URL}/api/protected`;
+				const options = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${sessionStorage.getItem('token')}`
+					}
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText)
+					return
+				}
+				const data = await response.json()
+				setStore({ alert: { text: data.message, background: 'success', visible: true } })
+			},
 			getContacts: async () => {
 				// GET
-				const uri = `${getStore().baseURLContact}/agendas/${getStore().user}/contacts`;
+				const uri = `https://playground.4geeks.com/contact`;
 				const response = await fetch(uri);
 				if (!response.ok) {
 					console.log('Error:', response.status, response.statusText)
