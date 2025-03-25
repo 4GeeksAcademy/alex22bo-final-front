@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import db, Users, Posts, Medias, Comments, Followers, Characters, Planets
+from api.models import db, Users, Posts, Medias, Comments, Followers, Characters, Planets, PlanetsFavorites, CharacterFavorites
 import requests
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -325,11 +325,11 @@ def characters():
     response_body = {}
     rows = db.session.execute(db.select(Characters)).scalars().all()
     if rows:
-            response_body['message'] = 'Datos obtenidos desde la base de datos'
-            response_body['results'] = [row.serialize() for row in rows]
-            return response_body, 200
+        response_body['message'] = 'Datos obtenidos desde la base de datos'
+        response_body['results'] = [row.serialize() for row in rows]
+        return response_body, 200
     response_body['results'] = []
-    url = 'https://swapi.tech/api/people/'
+    url = 'https://swapi.tech/api/people'
     response = requests.get(url)
     if response.status_code != 200:
             response_body['message'] = 'Error al conectar con la API externa de Star Wars'
@@ -340,16 +340,18 @@ def characters():
         if character_list.status_code == 200:
             character_data = character_list.json()
             character_properties = character_data['result']['properties']
-            response_body['results'].append({
-                "name": character_properties.get('name'),
-                "height": character_properties.get('height'),
-                "mass": character_properties.get('mass'),
-                "hair_color": character_properties.get('hair_color'),
-                "skin_color": character_properties.get('skin_color'),
-                "eye_color": character_properties.get('eye_color'),
-                "birth_year": character_properties.get('birth_year'),
-                "gender": character_properties.get('gender')
-            })
+            character = Characters(name = character_properties.get('name'),
+                					height = character_properties.get('height'),
+               						mass = character_properties.get('mass'),
+                					hair_color = character_properties.get('hair_color'),
+                					skin_color = character_properties.get('skin_color'),
+                					eye_color = character_properties.get('eye_color'),
+                					birth_year = character_properties.get('birth_year'),
+                					gender = character_properties.get('gender')
+            						)
+            db.session.add(character)
+            db.session.commit()
+            response_body['results'].append(character.serialize())            
     response_body['message'] = 'Datos obtenidos desde la API Star Wars'
     return response_body, 200
 
@@ -358,48 +360,179 @@ def characters():
 def character(character_id):
     response_body = {}
     row = db.session.execute(db.select(Characters).where(Characters.id == character_id)).scalar()
-    if not row:
-        response_body['message'] = f"Personaje con ID {character_id} no encontrado"
+    if row:
+        response_body['message'] = 'Personaje obtenido desde la base de datos'
+        response_body['results'] = row.serialize()
+        return response_body, 200
+    url = f'https://www.swapi.tech/api/people/{character_id}'
+    response = requests.get(url)
+    if response.status_code != 200:
+        response_body['message'] = f'Personaje con ID {character_id} no encontrado'
         return response_body, 404
-    response_body['results'] = row.serialize()
+    character_data = response.json()
+    properties = character_data['result']['properties']
+    new_character = Characters(id=character_id,
+        						name=properties.get('name'),
+        						height=properties.get('height'),
+        						mass=properties.get('mass'),
+        						hair_color=properties.get('hair_color'),
+        						skin_color=properties.get('skin_color'),
+        						eye_color=properties.get('eye_color'),
+        						birth_year=properties.get('birth_year'),
+        						gender=properties.get('gender')
+    							)
+    db.session.add(new_character)
+    db.session.commit()
+    response_body['message'] = 'Personaje obtenido desde la API y guardado en la base de datos'
+    response_body['results'] = new_character.serialize()
     return response_body, 200
     
 
 @api.route('/planets', methods=['GET'])
 def planets():
-     response_body = {}
-     rows = db.session.execute(db.select(Planets)).scalars()
-     if not rows:
-         url = 'https://swapi.tech/api/planets/'
-         respose = requests.get(url)
-         if respose.status_code == 200:
-            data = respose.json()
-            for row in data['results']:
-                planet_list = requests.get(row['url'])
-                if planet_list.status_code == 200:
-                    planet_data = planet_list.json()
-                    planet_properties = planet_data['result']['properties']
-                    response_body['results'].append({"name": planet_properties['name'],
-                                                    "diameter": planet_properties['diameter'],
-                                                    "rotation_period": planet_properties['rotation_period'],
-                                                    "orbital_period": planet_properties['orbital_period'],
-                                                    "gravity": planet_properties['gravity'],
-                                                    "population": planet_properties['population'],
-                                                    "climate": planet_properties['climate'],
-                                                    "terrain": planet_properties['terrain']})
-                    response_body['message'] = 'Datos de los planetas obtenidos de la API de STAR WARS'
-                    return jsonify(response_body), 200
-            response_body['message'] = f'Respuesta desde el {request.method}'
-            response_body['results'] = planet_data
-            return response_body, 200            
-
+    response_body = {}
+    rows = db.session.execute(db.select(Planets)).scalars().all()
+    if rows:
+        response_body['message'] = 'Datos obtenidos desde la base de datos'
+        response_body['results'] = [row.serialize() for row in rows]
+        return response_body, 200    
+    response_body['results'] = []
+    url = 'https://swapi.tech/api/planets'
+    response = requests.get(url)
+    if response.status_code != 200:
+        response_body['message'] = 'Error al conectar con la API de Star Wars'
+        return response_body, 500
+    data = response.json()
+    for row in data['results']:
+        planet_list = requests.get(row['url'])
+        if planet_list.status_code == 200:
+            planet_data = planet_list.json()
+            planet_properties = planet_data['result']['properties']
+            planet = Planets(name = planet_properties.get('name'),
+               				diameter = planet_properties.get('diameter'),
+               				rotation_period = planet_properties.get('rotation_period'),
+               				orbital_period = planet_properties.get('orbital_period'),
+               				gravity = planet_properties.get('gravity'),
+               				population = planet_properties.get('population'),
+               				climate = planet_properties.get('climate'),
+               				terrain = planet_properties.get('terrain')
+							)
+            db.session.add(planet)
+            db.session.commit()
+            response_body['results'].append(planet.serialize())
+    response_body['message'] = 'Datos obtenidos desde la API Star Wars'
+    return response_body, 200
+    
 
 @api.route('/planet/<int:planet_id>', methods=['GET'])
 def planet(planet_id):
     response_body = {}
     row = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
-    if not row:
-        response_body['message'] = f"Planeta con ID {planet_id} no encontrado"
+    if row:
+        response_body['message'] = 'Personaje obtenido desde la base de datos'
+        response_body['results'] = row.serialize()
+        return response_body, 200
+    url = f'https://www.swapi.tech/api/people/{planet_id}'
+    response = requests.get(url)
+    if response.status_code != 200:
+        response_body['message'] = f'Planeta con ID {planet_id} no encontrado'
         return response_body, 404
-    response_body['results'] = row.serialize()
+    planet_data = response.json()
+    properties = planet_data['result']['properties']
+    new_planet = Planets(id=planet_id,
+        				name = properties.get('name'),
+        				diameter = properties.get('diameter'),
+        				rotation_period = properties.get('rotation_period'),
+        				orbital_period = properties.get('orbital_period'),
+        				gravity = properties.get('gravity'),
+        				population = properties.get('population'),
+        				climate = properties.get('climate'),
+        				terrain = properties.get('terrain')
+    					)
+    db.session.add(new_planet)
+    db.session.commit()
+    response_body['message'] = 'Planeta obtenido desde la API y guardado en la base de datos'
+    response_body['results'] = new_planet.serialize()
+    return response_body, 200
+
+
+# Favoritos
+@api.route('/user/<int:user_id>/favorites', methods=['GET'])
+def get_user_favorites(user_id):
+    response_body = {}
+    user = db.session.execute(db.select(Users).where(Users.id == user_id)).scalar()
+    if not user:
+        response_body["message"] = f"Usuario con ID {user_id} no encontrado"
+        return response_body, 404
+    character_favs = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.user_id == user_id)).scalars().all()
+    planet_favs = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id)).scalars().all()
+    response_body["message"] = f"Favoritos del usuario con ID {user_id}"
+    response_body["results"] = {"characters": [fav.serialize() for fav in character_favs],
+        						"planets": [fav.serialize() for fav in planet_favs]
+    							}
+    return response_body, 200
+    
+
+@api.route('/user/<int:user_id>/favorite/planet/<int:planet_id>', methods=['POST'])
+def add_favorite_planet(user_id, planet_id):
+    response_body = {}
+    user = db.session.execute(db.select(Users).where(Users.id == user_id)).scalar()
+    planet = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
+    if not user or not planet:
+        response_body["message"] = "Usuario o planeta no encontrado"
+        return response_body, 404
+    favorite = PlanetsFavorites(user_id=user_id, planet_id=planet_id)
+    db.session.add(favorite)
+    db.session.commit()
+    response_body["message"] = "Planeta añadido a favoritos"
+    response_body["results"] = favorite.serialize()
+    return response_body, 201
+    
+
+@api.route('/user/<int:user_id>/favorite/people/<int:people_id>', methods=['POST'])
+def add_favorite_people(user_id, people_id):
+    response_body = {}
+    user = db.session.execute(db.select(Users).where(Users.id == user_id)).scalar()
+    character = db.session.execute(db.select(Characters).where(Characters.id == people_id)).scalar()
+    if not user or not character:
+        response_body["message"] = "Usuario o personaje no encontrado"
+        return response_body, 404
+    favorite = CharacterFavorites(user_id=user_id, character_id=people_id)
+    db.session.add(favorite)
+    db.session.commit()
+    response_body["message"] = "Personaje añadido a favoritos"
+    response_body["results"] = favorite.serialize()
+    return response_body, 201
+
+
+@api.route('/user/<int:user_id>/favorite/<int:favorite_id>/planet', methods=['DELETE'])
+def delete_favorite_planet(user_id, favorite_id):
+    response_body = {}
+    favorite = db.session.execute(
+        db.select(PlanetsFavorites).where(PlanetsFavorites.id == favorite_id)).scalar()
+    if not favorite:
+        response_body["message"] = f"Favorito con ID {favorite_id} no encontrado"
+        return response_body, 404
+    if favorite.user_id != user_id:
+        response_body["message"] = f"El favorito con ID {favorite_id} no pertenece al usuario con ID {user_id}"
+        return response_body, 403
+    db.session.delete(favorite)
+    db.session.commit()
+    response_body["message"] = f"Favorito con ID {favorite_id} eliminado correctamente"
+    return response_body, 200
+
+
+@api.route('/user/<int:user_id>/favorite/<int:favorite_id>/people', methods=['DELETE'])
+def delete_favorite_character(user_id, favorite_id):
+    response_body = {}
+    favorite = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.id == favorite_id)).scalar()
+    if not favorite:
+        response_body["message"] = f"Favorito con ID {favorite_id} no encontrado"
+        return response_body, 404
+    if favorite.user_id != user_id:
+        response_body["message"] = f"El favorito con ID {favorite_id} no pertenece al usuario con ID {user_id}"
+        return response_body, 403
+    db.session.delete(favorite)
+    db.session.commit()
+    response_body["message"] = f"Favorito con ID {favorite_id} eliminado correctamente"
     return response_body, 200
